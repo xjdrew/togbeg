@@ -20,6 +20,14 @@
       "default_title": "__MSG_icon_default_title__"
    },
 
+   "background": {
+       "page": "background.html"
+   },
+
+   "options_ui": {
+       "page": "options.html",
+       "chrome_style": true
+   },
 	
    "commands": {
       "_execute_browser_action": {
@@ -29,7 +37,7 @@
       }
    },
 
-   "minimum_chrome_version": "18.0.0",
+   "minimum_chrome_version": "40.0.0",
 
 	"permissions":[
 		"proxy"
