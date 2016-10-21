@@ -1,14 +1,5 @@
+process.env.NODE_ENV = 'production'
 // Do this as the first thing so that any code reading it knows the right env.
-process.env.NODE_ENV = 'production';
-
-// Load environment variables from .env file. Surpress warnings using silent
-// if this file is missing. dotenv will never modify any environment variables
-// that have already been set.
-// https://github.com/motdotla/dotenv
-require('dotenv').config({
-    silent: true
-});
-
 var chalk = require('chalk');
 var fs = require('fs-extra');
 var path = require('path');
@@ -20,9 +11,8 @@ var checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
 var recursive = require('recursive-readdir');
 var stripAnsi = require('strip-ansi');
 
-var config = require('../config/webpack.config.prod');
+var config = require('../config/webpack.config');
 var paths = require('../config/paths');
-var tasks = require('./tasks');
 
 // Input: /User/dan/app/build/static/js/main.82be8.js
 // Output: /static/js/main.js
@@ -68,8 +58,8 @@ recursive(paths.appBuild, (err, fileNames) => {
     // Start the webpack build
     build(previousSizeMap);
 
-    // Merge with the public folder
-    tasks.copyAssets();
+    // Merge with the chrome folder
+    copyAssets();
 });
 
 // Print a detailed summary of build files.
@@ -123,5 +113,12 @@ function build(previousSizeMap) {
         console.log();
         printFileSizes(stats, previousSizeMap);
         console.log();
+    });
+}
+
+function copyAssets() {
+    fs.copySync(paths.appPublic, paths.appBuild, {
+        dereference: true,
+        filter: file => ! /\.html/.test(file),
     });
 }
