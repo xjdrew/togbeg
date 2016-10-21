@@ -1,4 +1,5 @@
 process.env.NODE_ENV = 'production'
+
 // Do this as the first thing so that any code reading it knows the right env.
 var chalk = require('chalk');
 var fs = require('fs-extra');
@@ -11,8 +12,9 @@ var checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
 var recursive = require('recursive-readdir');
 var stripAnsi = require('strip-ansi');
 
-var config = require('../config/webpack.config');
+var config = require('../config/webpack.config.prod');
 var paths = require('../config/paths');
+var tasks = require('./tasks');
 
 // Input: /User/dan/app/build/static/js/main.82be8.js
 // Output: /static/js/main.js
@@ -59,7 +61,7 @@ recursive(paths.appBuild, (err, fileNames) => {
     build(previousSizeMap);
 
     // Merge with the chrome folder
-    copyAssets();
+    tasks.copyAssets();
 });
 
 // Print a detailed summary of build files.
@@ -113,12 +115,5 @@ function build(previousSizeMap) {
         console.log();
         printFileSizes(stats, previousSizeMap);
         console.log();
-    });
-}
-
-function copyAssets() {
-    fs.copySync(paths.appPublic, paths.appBuild, {
-        dereference: true,
-        filter: file => ! /\.html/.test(file),
     });
 }

@@ -1,0 +1,14 @@
+{
+    "app_name":{
+        "message":"拓跋",
+        "description":"应用名称"
+    },
+    "app_description":{
+        "message":"业提供高速稳定和便捷的VPN服务.多国线路,百兆带宽,不限流量速度,注册即可免费试用",
+        "description":"作为应用的描述性说明而显示"
+    },
+    "icon_default_title":{
+        "message":"正在加载……",
+        "description":"用后台页面正在加载时显示"
+    }
+}

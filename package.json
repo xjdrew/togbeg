@@ -48,6 +48,7 @@
   },
   "scripts": {
     "build": "node scripts/build.js",
+    "dev": "node scripts/dev.js",
     "test": "node scripts/test.js --env=jsdom"
   },
   "jest": {

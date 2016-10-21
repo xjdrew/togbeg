@@ -8,7 +8,7 @@ function resolveApp(relativePath) {
 
 // 预配置各种文件路径
 module.exports = {
-    appBuild: resolveApp('build'),
+    appBuild: process.env.NODE_ENV === "production" ? resolveApp('build') : resolveApp('dev'),
     appPublic: resolveApp('chrome'),
     appPopupHtml: resolveApp('chrome/popup.html'),
     appOptionsHtml: resolveApp('chrome/options.html'),
