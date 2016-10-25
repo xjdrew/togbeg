@@ -40,6 +40,7 @@
    "minimum_chrome_version": "40.0.0",
 
 	"permissions":[
+    "storage",
 		"proxy"
 	]
 }

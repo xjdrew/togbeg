@@ -37,10 +37,11 @@
       }
    },
 
-   "minimum_chrome_version": "40.0.0",
+   "minimum_chrome_version": "46.0.0",
 
 	"permissions":[
-		"proxy"
+		"proxy",
+    "storage"
 	],
 
     "content_security_policy":"script-src 'self' 'unsafe-eval'; object-src 'self'"
