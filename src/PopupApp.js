@@ -2,28 +2,15 @@ import React, { Component } from 'react';
 import './index.css';
 import './App.css';
 
-class App extends Component {
-  render() {
-    return (
-        <p>
-            Hello, <input type="text" placeholder="Your name here" />!
-            It is {this.props.date.toTimeString()}
-        </p>
-    );
-  }
-}
-
-export default App;
-
 function Square(props) {
     return (
-      <button className="square" onClick = {() => props.onClick()}>
+      <button className="square" onClick={() => props.onClick()}>
         {props.value}
       </button>
     );
 }
 
-class Board extends React.Component {
+class Board extends Component {
   renderSquare(i) {
     return <Square value={this.props.squares[i]} onClick={()=>this.props.onClick(i)} />;
   }
@@ -50,20 +37,36 @@ class Board extends React.Component {
   }
 }
 
-class Game extends React.Component {
+function ResetButton(props) {
+  return (
+    <button onClick={() => props.onClick()}>
+      {"Reset Game"}
+    </button>
+  );
+}
+
+class Game extends Component {
   constructor(props) {
 	  super(props);
-    if (props.state === undefined){
-      this.state = {
-        history: [{
-          squares: Array(9).fill(null),
-        }],
-        xIsNext: true,
-        stepNumber: 0,
-      }
+    if (props.state == null){
+      this.state = this.getInitState();
     } else {
       this.state = props.state
     }
+  }
+
+  getInitState() {
+    return {
+      history: [{
+        squares: Array(9).fill(null),
+      }],
+      xIsNext: true,
+      stepNumber: 0,
+    };
+  }
+
+  resetGame() {
+    this.setState(this.getInitState(), ()=>chrome.storage.local.set({state:this.state}));
   }
 
   handleClick(i) {
@@ -81,7 +84,7 @@ class Game extends React.Component {
     	xIsNext: !this.state.xIsNext,
       stepNumber: history.length,
     }, () => {
-      chrome.storage.local.set({state : this.state})
+      chrome.storage.local.set({state:this.state})
     });
   }
 
@@ -124,6 +127,9 @@ class Game extends React.Component {
           <div>{status}</div>
           <ol>{moves}</ol>
         </div>
+        <div>
+          <ResetButton onClick={() => this.resetGame()} />
+        </div>
       </div>
     );
   }
@@ -148,6 +154,5 @@ function calculateWinner(squares) {
   }
   return null;
 }
-// ========================================
 
-export {Game};
+export default Game;
