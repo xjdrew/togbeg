@@ -12,26 +12,20 @@ function Square(props) {
 
 class Board extends Component {
   renderSquare(i) {
-    return <Square value={this.props.squares[i]} onClick={()=>this.props.onClick(i)} />;
+    return <Square key={i} value={this.props.squares[i]} onClick={()=>this.props.onClick(i)} />;
   }
   render() {
+    var rows = new Array(3);
+    for (var row=0; row<=2; row++) {
+      var squares = new Array(3);
+      for(var col=0; col<=2; col++) {
+        squares[col] = this.renderSquare(row * 3 + col);
+      }
+      rows[row] = <div key={row} className="board-row"> {squares} </div>;
+    }
     return (
       <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+        {rows}
       </div>
     );
   }
@@ -59,6 +53,8 @@ class Game extends Component {
     return {
       history: [{
         squares: Array(9).fill(null),
+        row: null,
+        col: null,
       }],
       xIsNext: true,
       stepNumber: 0,
@@ -70,8 +66,8 @@ class Game extends Component {
   }
 
   handleClick(i) {
-    const history = this.state.history;
-    const current = history[history.length - 1];
+    const history = this.state.history.slice(0, this.state.stepNumber+1);
+    const current = history[this.state.stepNumber];
     const squares = current.squares.slice();
     if (calculateWinner(squares) || squares[i]) {
       return;
@@ -80,6 +76,8 @@ class Game extends Component {
     this.setState({
     	history: history.concat([{
       	squares: squares,
+        row: Math.floor(i/3),
+        col: i%3,
     	}]),
     	xIsNext: !this.state.xIsNext,
       stepNumber: history.length,
@@ -108,11 +106,14 @@ class Game extends Component {
 		}
 
 		const moves = history.map((step, move) => {
-			const desc = move ?
+			var desc = move ?
 				'Move #' + move :
 				'Game start';
+      if(step.row != null) {
+        desc += `(${step.row},${step.col})`
+      }
 			return (
-				<li key={move}>
+				<li key={move} className={move === this.state.stepNumber?"ol-selected-item":""}>
 					<a href="#" onClick={() => this.jumpTo(move)}>{desc}</a>
 				</li>
 			);
@@ -149,7 +150,7 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      return squares[a]
     }
   }
   return null;

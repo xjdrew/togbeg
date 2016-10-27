@@ -23,6 +23,10 @@ ol, ul {
   padding-left: 30px;
 }
 
+.ol-selected-item {
+  font-weight: bold;
+}
+
 .board-row {
   clear: both;
   display: table;
@@ -49,9 +53,6 @@ ol, ul {
 
 .square:focus {
   outline: none;
-}
-
-.kbd-navigation .square:focus {
   background: #ddd;
 }
 
