@@ -46,7 +46,9 @@
   },
   "dependencies": {
     "react": "^15.3.2",
-    "react-dom": "^15.3.2"
+    "react-dom": "^15.3.2",
+    "react-redux": "^4.4.5",
+    "redux": "^3.6.0"
   },
   "scripts": {
     "build": "node scripts/build.js",
@@ -79,8 +81,8 @@
   },
   "eslintConfig": {
     "extends": "react-app",
-    "globals" : {
-      "chrome" : false
+    "globals": {
+      "chrome": false
     }
   }
 }
